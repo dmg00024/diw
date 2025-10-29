@@ -3,17 +3,29 @@ import java.util.*;
 
 
 public class Usuario {
-    private String nombre;
-    private List<Libro> libros; // Lista para almacenar los libros asociados al usuario
-    enum rol {ADMIN, PROFESOR, ALUMNO};
 
-    public Usuario() {
-        this.libros = new ArrayList<>(); // Inicializo la lista de libros
+    private Integer id;
+    private String nombre;
+
+    public enum Rol {ADMIN, PROFESOR, ALUMNO}
+    private Rol rol;
+
+    private List<Libro> libros = new ArrayList<>();
+
+    public Usuario() {}
+
+    public Usuario(Integer id, String nombre, Rol rol) {
+        this.id = id;
+        this.nombre = nombre;
+        this.rol = rol;
     }
 
-    public Usuario(String nombre, List<Libro> libros) {
-        this.nombre = nombre;
-        this.libros = libros;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -24,4 +36,19 @@ public class Usuario {
         this.nombre = nombre;
     }
 
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+
+    public List<Libro> getLibros() {
+        return libros;
+    }
+
+    public void setLibros(List<Libro> libros) {
+        this.libros = libros;
+    }
 }
