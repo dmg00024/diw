@@ -1,61 +1,73 @@
 package com.diw.practica.model;
 
 public class Libro {
-    private String Titulo;
-    private String Autor;
-    private String ISBN;
-    private int AnioPublicacion;
-    private String Editorial;
 
-    private enum estado {TRAMITADO, PENDIENTE, ESPERA}
+    private String titulo;
+    private String autor;
+    private String isbn;
+    private Integer anioPublicacion;
+    private String editorial;
 
-    ;
+    private enum estado {TRAMITADO, PENDIENTE, ESPERA};
 
-    public Libro(String titulo, String autor, String ISBN, int anioPublicacion, String editorial) {
-        Titulo = titulo;
-        Autor = autor;
-        this.ISBN = ISBN;
-        AnioPublicacion = anioPublicacion;
-        Editorial = editorial;
+    private estado estadoLibro;
+
+    public Libro () {}
+
+    public Libro(String titulo, String autor, String isbn, Integer anioPublicacion, String editorial, estado estadoLibro) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.anioPublicacion = anioPublicacion;
+        this.editorial = editorial;
+        this.estadoLibro = estadoLibro;
     }
 
     public String getTitulo() {
-        return Titulo;
+        return titulo;
     }
 
     public void setTitulo(String titulo) {
-        Titulo = titulo;
+        this.titulo = titulo;
     }
 
     public String getAutor() {
-        return Autor;
+        return autor;
     }
 
     public void setAutor(String autor) {
-        Autor = autor;
+        this.autor = autor;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
-    public int getAnioPublicacion() {
-        return AnioPublicacion;
+    public Integer getAnioPublicacion() {
+        return anioPublicacion;
     }
 
-    public void setAnioPublicacion(int anioPublicacion) {
-        AnioPublicacion = anioPublicacion;
+    public void setAnioPublicacion(Integer anioPublicacion) {
+        this.anioPublicacion = anioPublicacion;
     }
 
     public String getEditorial() {
-        return Editorial;
+        return editorial;
     }
 
     public void setEditorial(String editorial) {
-        Editorial = editorial;
+        this.editorial = editorial;
+    }
+
+    public estado getEstadoLibro() {
+        return estadoLibro;
+    }
+
+    public void setEstadoLibro(estado estadoLibro) {
+        this.estadoLibro = estadoLibro;
     }
 }
