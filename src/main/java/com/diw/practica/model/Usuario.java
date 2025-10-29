@@ -1,15 +1,21 @@
 package com.diw.practica.model;
+import jakarta.persistence.*;
+
 import java.util.*;
 
-
+@Entity
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
 
     public enum Rol {ADMIN, PROFESOR, ALUMNO}
+    @Enumerated (EnumType.STRING)
     private Rol rol;
 
+    @OneToMany
     private List<Libro> libros = new ArrayList<>();
 
     public Usuario() {}

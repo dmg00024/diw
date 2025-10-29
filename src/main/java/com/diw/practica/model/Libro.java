@@ -1,7 +1,13 @@
 package com.diw.practica.model;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Libro {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String titulo;
     private String autor;
     private String isbn;
@@ -9,7 +15,7 @@ public class Libro {
     private String editorial;
 
     private enum estado {TRAMITADO, PENDIENTE, ESPERA};
-
+    @Enumerated (EnumType.STRING)
     private estado estadoLibro;
 
     public Libro () {}
@@ -21,6 +27,14 @@ public class Libro {
         this.anioPublicacion = anioPublicacion;
         this.editorial = editorial;
         this.estadoLibro = estadoLibro;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitulo() {
