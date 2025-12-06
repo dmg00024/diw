@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 @Entity
 public class Libro {
 
+    public enum Estado {DISPONIBLE, PRESTADO, RESERVADO}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -14,13 +16,24 @@ public class Libro {
     private Integer anioPublicacion;
     private String editorial;
 
-    private enum estado {TRAMITADO, PENDIENTE, ESPERA};
-    @Enumerated (EnumType.STRING)
-    private estado estadoLibro;
+    @Enumerated(EnumType.STRING)
+    private Estado estadoLibro = Estado.DISPONIBLE;
 
-    public Libro () {}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    private Usuario prestadoA;
 
-    public Libro(String titulo, String autor, String isbn, Integer anioPublicacion, String editorial, estado estadoLibro) {
+    public Libro() {
+    }
+
+    public Libro(
+            String titulo,
+            String autor,
+            String isbn,
+            Integer anioPublicacion,
+            String editorial,
+            Estado estadoLibro
+    ) {
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = isbn;
@@ -77,11 +90,19 @@ public class Libro {
         this.editorial = editorial;
     }
 
-    public estado getEstadoLibro() {
+    public Estado getEstadoLibro() {
         return estadoLibro;
     }
 
-    public void setEstadoLibro(estado estadoLibro) {
+    public void setEstadoLibro(Estado estadoLibro) {
         this.estadoLibro = estadoLibro;
+    }
+
+    public Usuario getPrestadoA() {
+        return prestadoA;
+    }
+
+    public void setPrestadoA(Usuario prestadoA) {
+        this.prestadoA = prestadoA;
     }
 }

@@ -15,7 +15,7 @@ public class Usuario {
     @Enumerated (EnumType.STRING)
     private Rol rol;
 
-    @OneToMany
+    @OneToMany(mappedBy = "prestadoA", cascade = CascadeType.ALL)
     private List<Libro> libros = new ArrayList<>();
 
     public Usuario() {}
@@ -45,15 +45,12 @@ public class Usuario {
     public Rol getRol() {
         return rol;
     }
-
     public void setRol(Rol rol) {
         this.rol = rol;
     }
-
     public List<Libro> getLibros() {
         return libros;
     }
-
     public void setLibros(List<Libro> libros) {
         this.libros = libros;
     }
