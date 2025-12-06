@@ -1,70 +1,144 @@
 package com.diw.practica.beans;
 
-import com.diw.practica.model.Libro;
-import com.diw.practica.model.Usuario;
-import com.diw.practica.repository.LibroRepository;
-import com.diw.practica.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+            import com.diw.practica.model.Libro;
+            import com.diw.practica.model.Usuario;
+            import com.diw.practica.repository.LibroRepository;
+            import com.diw.practica.repository.UsuarioRepository;
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+            import java.util.List;
+            import java.util.Optional;
 
-@Service
-public class AdminServiceImpl implements AdminService {
+            /**
+             * Implementación del servicio administrativo encargado de operaciones CRUD
+             * sobre las entidades {@link Usuario} y {@link Libro}.
+             *
+             * <p>Esta clase delega la persistencia en las instancias de
+             * {@link UsuarioRepository} y {@link LibroRepository} inyectadas por Spring.</p>
+             *
+             * @author
+             * @since 1.0
+             */
+            @Service
+            public class AdminServiceImpl implements AdminService {
 
-    private final UsuarioRepository usuarioRepository;
-    private final LibroRepository libroRepository;
+                /**
+                 * Repositorio para operaciones sobre {@link Usuario}.
+                 */
+                private final UsuarioRepository usuarioRepository;
 
-    @Autowired
-    public AdminServiceImpl(UsuarioRepository usuarioRepository, LibroRepository libroRepository) {
-        this.usuarioRepository = usuarioRepository;
-        this.libroRepository = libroRepository;
-    }
+                /**
+                 * Repositorio para operaciones sobre {@link Libro}.
+                 */
+                private final LibroRepository libroRepository;
 
-    @Override
-    public Usuario registrarUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
-    }
+                /**
+                 * Construye una nueva instancia de {@code AdminServiceImpl} con los
+                 * repositorios necesarios inyectados.
+                 *
+                 * @param usuarioRepository repositorio para la gestión de usuarios; no debe ser {@code null}
+                 * @param libroRepository   repositorio para la gestión de libros; no debe ser {@code null}
+                 */
+                @Autowired
+                public AdminServiceImpl(UsuarioRepository usuarioRepository, LibroRepository libroRepository) {
+                    this.usuarioRepository = usuarioRepository;
+                    this.libroRepository = libroRepository;
+                }
 
-    @Override
-    public List<Usuario> listarUsuarios() {
-        return usuarioRepository.findAll();
-    }
+                /**
+                 * Registra un nuevo usuario en la persistencia.
+                 *
+                 * <p>Utiliza {@link UsuarioRepository#save(Object)} para almacenar el usuario.
+                 * Si el repositorio lanza una excepción relacionada con acceso a datos,
+                 * ésta se propagará al llamador.</p>
+                 *
+                 * @param usuario entidad {@link Usuario} a registrar; se espera que contenga los datos necesarios
+                 * @return la instancia persistida de {@link Usuario} (puede incluir campos generados como id)
+                 */
+                @Override
+                public Usuario registrarUsuario(Usuario usuario) {
+                    return usuarioRepository.save(usuario);
+                }
 
-    @Override
-    public Libro registrarLibro(Libro libro) {
-        if (libro.getEstadoLibro() == null) {
-            libro.setEstadoLibro(Libro.Estado.DISPONIBLE);
-        }
-        return libroRepository.save(libro);
-    }
+                /**
+                 * Devuelve la lista de todos los usuarios almacenados.
+                 *
+                 * @return lista de instancias {@link Usuario}; nunca {@code null} (puede ser vacía)
+                 */
+                @Override
+                public List<Usuario> listarUsuarios() {
+                    return usuarioRepository.findAll();
+                }
 
-    @Override
-    public Optional<Libro> actualizarLibro(Integer libroId, Libro libroActualizado) {
-        return libroRepository.findById(libroId).map(libroExistente -> {
-            libroExistente.setTitulo(libroActualizado.getTitulo());
-            libroExistente.setAutor(libroActualizado.getAutor());
-            libroExistente.setIsbn(libroActualizado.getIsbn());
-            libroExistente.setAnioPublicacion(libroActualizado.getAnioPublicacion());
-            libroExistente.setEditorial(libroActualizado.getEditorial());
-            if (libroActualizado.getEstadoLibro() != null) {
-                libroExistente.setEstadoLibro(libroActualizado.getEstadoLibro());
+                /**
+                 * Registra un nuevo libro en la persistencia.
+                 *
+                 * <p>Si el campo {@code estadoLibro} del objeto proporcionado es {@code null},
+                 * se establece por defecto a {@link Libro.Estado#DISPONIBLE} antes de persistir.</p>
+                 *
+                 * @param libro entidad {@link Libro} a registrar
+                 * @return la instancia persistida de {@link Libro} (puede contener campos generados como id)
+                 */
+                @Override
+                public Libro registrarLibro(Libro libro) {
+                    if (libro.getEstadoLibro() == null) {
+                        libro.setEstadoLibro(Libro.Estado.DISPONIBLE);
+                    }
+                    return libroRepository.save(libro);
+                }
+
+                /**
+                 * Actualiza los datos de un libro existente con los valores proporcionados.
+                 *
+                 * <p>Busca el libro por su identificador; si existe, actualiza los campos
+                 * título, autor, ISBN, año de publicación, editorial y, si se proporciona,
+                 * el estado del libro. Persiste los cambios y devuelve el libro actualizado.</p>
+                 *
+                 * @param libroId          identificador del libro a actualizar
+                 * @param libroActualizado objeto {@link Libro} que contiene los nuevos valores
+                 * @return {@link Optional} que contiene el libro actualizado si se encontró el libro,
+                 *         o {@link Optional#empty()} si no existe un libro con el identificador dado
+                 */
+                @Override
+                public Optional<Libro> actualizarLibro(Integer libroId, Libro libroActualizado) {
+                    return libroRepository.findById(libroId).map(libroExistente -> {
+                        libroExistente.setTitulo(libroActualizado.getTitulo());
+                        libroExistente.setAutor(libroActualizado.getAutor());
+                        libroExistente.setIsbn(libroActualizado.getIsbn());
+                        libroExistente.setAnioPublicacion(libroActualizado.getAnioPublicacion());
+                        libroExistente.setEditorial(libroActualizado.getEditorial());
+                        if (libroActualizado.getEstadoLibro() != null) {
+                            libroExistente.setEstadoLibro(libroActualizado.getEstadoLibro());
+                        }
+                        return libroRepository.save(libroExistente);
+                    });
+                }
+
+                /**
+                 * Elimina un libro por su identificador.
+                 *
+                 * <p>Si el libro existe, se elimina y el método devuelve {@code true}.
+                 * Si no existe, devuelve {@code false}.</p>
+                 *
+                 * @param libroId identificador del libro a eliminar
+                 * @return {@code true} si el libro fue encontrado y eliminado; {@code false} en caso contrario
+                 */
+                @Override
+                public boolean eliminarLibro(Integer libroId) {
+                    return libroRepository.findById(libroId).map(libro -> {
+                        libroRepository.delete(libro);
+                        return true;
+                    }).orElse(false);
+                }
+
+                /**
+                 * Obtiene la lista de todos los libros almacenados.
+                 *
+                 * @return lista de instancias {@link Libro}; nunca {@code null} (puede ser vacía)
+                 */
+                @Override
+                public List<Libro> listarLibros() {
+                    return libroRepository.findAll();
+                }
             }
-            return libroRepository.save(libroExistente);
-        });
-    }
-
-    @Override
-    public boolean eliminarLibro(Integer libroId) {
-        return libroRepository.findById(libroId).map(libro -> {
-            libroRepository.delete(libro);
-            return true;
-        }).orElse(false);
-    }
-
-    @Override
-    public List<Libro> listarLibros() {
-        return libroRepository.findAll();
-    }
-}
