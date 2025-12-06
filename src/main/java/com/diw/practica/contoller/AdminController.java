@@ -14,6 +14,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.headers.Header;
 
 /**
  * Controlador para operaciones administrativas sobre usuarios y libros.
@@ -23,6 +28,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ADMIN')")
 @Tag(name = "Admin", description = "Operaciones administrativas para usuarios y libros")
+@SecurityRequirement(name = "bearerAuth")
 public class AdminController {
 
     private final AdminService adminService;
@@ -39,8 +45,10 @@ public class AdminController {
     @GetMapping("/usuarios")
     @Operation(summary = "Listar usuarios", description = "Devuelve la lista de todos los usuarios registrados")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida correctamente"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida correctamente",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Usuario.class)))),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public List<Usuario> listarUsuarios() {
         return adminService.listarUsuarios();
@@ -55,14 +63,17 @@ public class AdminController {
     @PostMapping("/usuarios")
     @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario en el sistema")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Usuario creado"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "201", description = "Usuario creado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Usuario.class)),
+                    headers = @Header(name = "Location", description = "URI del recurso creado", schema = @Schema(type = "string"))),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public ResponseEntity<Usuario> crearUsuario(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Usuario a crear", required = true)
             @RequestBody Usuario usuario) {
-        return ResponseEntity.status(201).body(adminService.registrarUsuario(usuario));
+        Usuario creado = adminService.registrarUsuario(usuario);
+        return ResponseEntity.status(201).body(creado);
     }
 
     /**
@@ -73,8 +84,10 @@ public class AdminController {
     @GetMapping("/libros")
     @Operation(summary = "Listar libros", description = "Devuelve la lista de todos los libros")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de libros obtenida correctamente"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "200", description = "Lista de libros obtenida correctamente",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Libro.class)))),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public List<Libro> listarLibros() {
         return adminService.listarLibros();
@@ -89,9 +102,11 @@ public class AdminController {
     @PostMapping("/libros")
     @Operation(summary = "Crear libro", description = "Crea un nuevo libro en el catálogo")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Libro creado"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "201", description = "Libro creado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Libro.class)),
+                    headers = @Header(name = "Location", description = "URI del recurso creado", schema = @Schema(type = "string"))),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public ResponseEntity<Libro> crearLibro(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Libro a crear", required = true)
@@ -109,9 +124,10 @@ public class AdminController {
     @PutMapping("/libros/{libroId}")
     @Operation(summary = "Actualizar libro", description = "Actualiza los datos de un libro existente")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Libro actualizado"),
-            @ApiResponse(responseCode = "404", description = "Libro no encontrado"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "200", description = "Libro actualizado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Libro.class))),
+            @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public ResponseEntity<Libro> actualizarLibro(
             @Parameter(description = "ID del libro a actualizar", required = true) @PathVariable Integer libroId,
@@ -132,9 +148,9 @@ public class AdminController {
     @DeleteMapping("/libros/{libroId}")
     @Operation(summary = "Eliminar libro", description = "Elimina un libro por su ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Libro eliminado"),
-            @ApiResponse(responseCode = "404", description = "Libro no encontrado"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "204", description = "Libro eliminado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Libro no encontrado", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public ResponseEntity<Void> eliminarLibro(
             @Parameter(description = "ID del libro a eliminar", required = true) @PathVariable Integer libroId) {

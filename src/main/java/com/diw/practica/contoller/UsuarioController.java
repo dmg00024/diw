@@ -13,6 +13,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.headers.Header;
 
 /**
  * Controlador para operaciones disponibles a usuarios con rol \`USER\`.
@@ -22,6 +26,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 @RequestMapping("/usuarios")
 @PreAuthorize("hasRole('USER')")
 @Tag(name = "Usuario", description = "Operaciones para usuarios (préstamos, devoluciones, listado)")
+@SecurityRequirement(name = "bearerAuth")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -38,8 +43,9 @@ public class UsuarioController {
     @GetMapping("/libros/disponibles")
     @Operation(summary = "Listar libros disponibles", description = "Devuelve la lista de libros que están disponibles para préstamo")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista de libros obtenida correctamente"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "200", description = "Lista de libros obtenida correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Libro.class))),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public List<Libro> librosDisponibles() {
         return usuarioService.librosDisponibles();
@@ -54,9 +60,10 @@ public class UsuarioController {
     @GetMapping("/{usuarioId}/prestamos")
     @Operation(summary = "Listar préstamos de usuario", description = "Devuelve los libros prestados a un usuario dado")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Préstamos obtenidos correctamente"),
-            @ApiResponse(responseCode = "404", description = "No se encontraron préstamos para el usuario"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "200", description = "Préstamos obtenidos correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Libro.class))),
+            @ApiResponse(responseCode = "404", description = "No se encontraron préstamos para el usuario", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public ResponseEntity<List<Libro>> prestamosDeUsuario(
             @Parameter(description = "ID del usuario", required = true) @PathVariable Integer usuarioId) {
@@ -77,9 +84,11 @@ public class UsuarioController {
     @PostMapping("/{usuarioId}/prestamos/{libroId}")
     @Operation(summary = "Solicitar préstamo", description = "Solicita el préstamo de un libro para el usuario indicado")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Préstamo solicitado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud inválida o libro no disponible"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "201", description = "Préstamo solicitado correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Libro.class)),
+                    headers = @Header(name = "Location", description = "URI del recurso creado", schema = @Schema(type = "string"))),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida o libro no disponible", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public ResponseEntity<Libro> solicitarPrestamo(
             @Parameter(description = "ID del usuario que solicita", required = true) @PathVariable Integer usuarioId,
@@ -100,9 +109,10 @@ public class UsuarioController {
     @PostMapping("/{usuarioId}/devoluciones/{libroId}")
     @Operation(summary = "Devolver préstamo", description = "Registra la devolución de un libro por parte del usuario")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Devolución procesada correctamente"),
-            @ApiResponse(responseCode = "400", description = "Devolución inválida"),
-            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+            @ApiResponse(responseCode = "200", description = "Devolución procesada correctamente",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Libro.class))),
+            @ApiResponse(responseCode = "400", description = "Devolución inválida", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public ResponseEntity<Libro> devolverPrestamo(
             @Parameter(description = "ID del usuario que devuelve", required = true) @PathVariable Integer usuarioId,
