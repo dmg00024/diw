@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -78,6 +79,8 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @Override
     public List<Libro> prestamosDeUsuario(Integer usuarioId) {
+        Objects.requireNonNull(usuarioId, "El identificador del usuario no puede ser nulo");
+
         return usuarioRepository.findById(usuarioId)
                 .map(Usuario::getLibros)
                 .orElse(Collections.emptyList());
@@ -103,6 +106,9 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @Override
     public Optional<Libro> solicitarPrestamo(Integer usuarioId, Integer libroId) {
+        Objects.requireNonNull(usuarioId, "El identificador del usuario no puede ser nulo");
+        Objects.requireNonNull(libroId, "El identificador del libro no puede ser nulo");
+
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
         Optional<Libro> libro = libroRepository.findById(libroId);
 
@@ -146,6 +152,9 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @Override
     public Optional<Libro> devolverPrestamo(Integer usuarioId, Integer libroId) {
+        Objects.requireNonNull(usuarioId, "El identificador del usuario no puede ser nulo");
+        Objects.requireNonNull(libroId, "El identificador del libro no puede ser nulo");
+
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
         Optional<Libro> libro = libroRepository.findById(libroId);
 
