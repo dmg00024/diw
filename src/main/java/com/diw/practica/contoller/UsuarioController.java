@@ -83,7 +83,7 @@ public class UsuarioController {
      * @param libroId   id del libro a solicitar
      * @return libro solicitado con estado 201 o 400 si no es posible
      */
-    @PostMapping( "/{usuarioId}/prestamos/{libroId}")
+    @PostMapping(path = "/{usuarioId}/prestamos/{libroId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Solicitar préstamo", description = "Solicita el préstamo de un libro para el usuario indicado")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Préstamo solicitado correctamente",
@@ -108,7 +108,7 @@ public class UsuarioController {
      * @param libroId   id del libro a devolver
      * @return libro devuelto o 400 si la devolución es inválida
      */
-    @PostMapping(path = "/{usuarioId}/devoluciones/{libroId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/{usuarioId}/devoluciones/{libroId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Devolver préstamo", description = "Registra la devolución de un libro por parte del usuario")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Devolución procesada correctamente",
