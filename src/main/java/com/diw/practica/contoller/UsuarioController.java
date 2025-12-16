@@ -83,7 +83,7 @@ public class UsuarioController {
      * @param libroId   id del libro a solicitar
      * @return libro solicitado con estado 201 o 400 si no es posible
      */
-    @PostMapping(path = "/{usuarioId}/prestamos/{libroId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping( "/{usuarioId}/prestamos/{libroId}")
     @Operation(summary = "Solicitar préstamo", description = "Solicita el préstamo de un libro para el usuario indicado")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Préstamo solicitado correctamente",

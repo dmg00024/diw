@@ -79,8 +79,7 @@ public class Libro {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
-    @JsonBackReference
-    @JsonIgnore
+    @JsonBackReference (value = "usuario-libros")
     private Usuario prestadoA;
 
     /**

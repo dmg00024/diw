@@ -54,7 +54,7 @@ public class Usuario {
      * </p>
      */
     @OneToMany(mappedBy = "prestadoA", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference (value = "usuario-libros")
     private List<Libro> libros = new ArrayList<>();
 
     /**

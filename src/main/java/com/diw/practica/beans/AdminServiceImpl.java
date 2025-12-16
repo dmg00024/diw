@@ -60,6 +60,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Usuario registrarUsuario(Usuario usuario) {
         Objects.requireNonNull(usuario, "El usuario no puede ser nulo");
+
+        // Al crear un usuario vía POST se puede enviar un id=0 desde el cliente.
+        // Forzamos el identificador a null para evitar que Hibernate intente hacer
+        // un merge sobre una fila inexistente y provoque un StaleObjectStateException.
+        usuario.setId(null);
+
         return usuarioRepository.save(usuario);
     }
 
@@ -85,6 +91,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Libro registrarLibro(Libro libro) {
         Objects.requireNonNull(libro, "El libro no puede ser nulo");
+
+        // Al crear un usuario vía POST se puede enviar un id=0 desde el cliente.
+        // Forzamos el identificador a null para evitar que Hibernate intente hacer
+        // un merge sobre una fila inexistente y provoque un StaleObjectStateException.
+        libro.setId(null);
+
         if (libro.getEstadoLibro() == null) {
             libro.setEstadoLibro(Libro.Estado.DISPONIBLE);
         }
