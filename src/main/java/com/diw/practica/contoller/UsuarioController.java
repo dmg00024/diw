@@ -42,7 +42,7 @@ public class UsuarioController {
      *
      * @return lista de libros disponibles
      */
-    @GetMapping(path = "/libros/disponibles", produces = MediaType.ALL_VALUE)
+    @GetMapping(path = "/libros/disponibles", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar libros disponibles", description = "Devuelve la lista de libros que están disponibles para préstamo")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de libros obtenida correctamente",
@@ -59,7 +59,7 @@ public class UsuarioController {
      * @param usuarioId id del usuario
      * @return lista de libros prestados o 404 si no tiene préstamos
      */
-    @GetMapping(path = "/{usuarioId}/prestamos", produces = MediaType.ALL_VALUE)
+    @GetMapping(path = "/{usuarioId}/prestamos", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar préstamos de usuario", description = "Devuelve los libros prestados a un usuario dado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Préstamos obtenidos correctamente",
@@ -83,7 +83,7 @@ public class UsuarioController {
      * @param libroId   id del libro a solicitar
      * @return libro solicitado con estado 201 o 400 si no es posible
      */
-    @PostMapping(path = "/{usuarioId}/prestamos/{libroId}", consumes = MediaType.ALL_VALUE)
+    @PostMapping(path = "/{usuarioId}/prestamos/{libroId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Solicitar préstamo", description = "Solicita el préstamo de un libro para el usuario indicado")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Préstamo solicitado correctamente",
@@ -108,7 +108,7 @@ public class UsuarioController {
      * @param libroId   id del libro a devolver
      * @return libro devuelto o 400 si la devolución es inválida
      */
-    @PostMapping(path = "/{usuarioId}/devoluciones/{libroId}", consumes = MediaType.ALL_VALUE)
+    @PostMapping(path = "/{usuarioId}/devoluciones/{libroId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Devolver préstamo", description = "Registra la devolución de un libro por parte del usuario")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Devolución procesada correctamente",

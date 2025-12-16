@@ -3,6 +3,7 @@ package com.diw.practica.contoller;
 import com.diw.practica.beans.AdminService;
 import com.diw.practica.model.Libro;
 import com.diw.practica.model.Usuario;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class AdminController {
      *
      * @return lista de usuarios
      */
-    @GetMapping("/usuarios")
+    @GetMapping(path = "/usuarios", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar usuarios", description = "Devuelve la lista de todos los usuarios registrados")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida correctamente",
@@ -60,7 +61,7 @@ public class AdminController {
      * @param usuario objeto usuario a crear
      * @return usuario creado con estado 201
      */
-    @PostMapping("/usuarios")
+    @PostMapping(path = "/usuarios", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario en el sistema")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Usuario creado",
@@ -81,7 +82,7 @@ public class AdminController {
      *
      * @return lista de libros
      */
-    @GetMapping("/libros")
+    @GetMapping(path = "/libros", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar libros", description = "Devuelve la lista de todos los libros")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de libros obtenida correctamente",
@@ -99,7 +100,7 @@ public class AdminController {
      * @param libro libro a crear
      * @return libro creado con estado 201
      */
-    @PostMapping("/libros")
+    @PostMapping(path = "/libros", consumes =  MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Crear libro", description = "Crea un nuevo libro en el catálogo")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Libro creado",
@@ -121,7 +122,7 @@ public class AdminController {
      * @param libroActualizado datos actualizados del libro
      * @return libro actualizado o 404 si no existe
      */
-    @PutMapping("/libros/{libroId}")
+    @PutMapping(path = "/libros/{libroId}", consumes =  MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Actualizar libro", description = "Actualiza los datos de un libro existente")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Libro actualizado",
@@ -145,7 +146,7 @@ public class AdminController {
      * @param libroId id del libro a eliminar
      * @return 204 si se eliminó, 404 si no se encontró
      */
-    @DeleteMapping("/libros/{libroId}")
+    @DeleteMapping(path = "/libros/{libroId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Eliminar libro", description = "Elimina un libro por su ID")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Libro eliminado", content = @Content),
