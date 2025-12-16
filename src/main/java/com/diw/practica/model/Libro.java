@@ -1,5 +1,6 @@
 package com.diw.practica.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 /**
@@ -77,6 +78,7 @@ public class Libro {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
+    @JsonBackReference
     private Usuario prestadoA;
 
     /**
