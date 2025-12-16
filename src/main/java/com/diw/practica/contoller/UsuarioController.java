@@ -2,6 +2,7 @@ package com.diw.practica.contoller;
 
 import com.diw.practica.beans.UsuarioService;
 import com.diw.practica.model.Libro;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class UsuarioController {
     @Operation(summary = "Listar libros disponibles", description = "Devuelve la lista de libros que están disponibles para préstamo")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista de libros obtenida correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Libro.class))),
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Libro.class)))),
             @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     public List<Libro> librosDisponibles() {
@@ -61,7 +62,7 @@ public class UsuarioController {
     @Operation(summary = "Listar préstamos de usuario", description = "Devuelve los libros prestados a un usuario dado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Préstamos obtenidos correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Libro.class))),
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Libro.class)))),
             @ApiResponse(responseCode = "404", description = "No se encontraron préstamos para el usuario", content = @Content),
             @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
