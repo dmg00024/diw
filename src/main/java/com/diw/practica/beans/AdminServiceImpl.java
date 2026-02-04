@@ -121,11 +121,32 @@ public class AdminServiceImpl implements AdminService {
         Objects.requireNonNull(libroActualizado, "El libro actualizado no puede ser nulo");
 
         return libroRepository.findById(libroId).map(libroExistente -> {
+
+            /**
             libroExistente.setTitulo(libroActualizado.getTitulo());
             libroExistente.setAutor(libroActualizado.getAutor());
             libroExistente.setIsbn(libroActualizado.getIsbn());
             libroExistente.setAnioPublicacion(libroActualizado.getAnioPublicacion());
             libroExistente.setEditorial(libroActualizado.getEditorial());
+            libroExistente.setEstadoLibro(libroActualizado.getEstadoLibro());
+            */
+
+            if (libroActualizado.getTitulo() != null) {
+                libroExistente.setTitulo(libroActualizado.getTitulo());
+            }
+            if (libroActualizado.getAutor() != null) {
+                libroExistente.setAutor(libroActualizado.getAutor());
+            }
+            if (libroActualizado.getIsbn() != null) {
+                libroExistente.setIsbn(libroActualizado.getIsbn());
+            }
+            if (libroActualizado.getAnioPublicacion() != null) {
+                libroExistente.setAnioPublicacion(libroActualizado.getAnioPublicacion());
+            }
+            if (libroActualizado.getEditorial() != null) {
+                libroExistente.setEditorial(libroActualizado.getEditorial());
+            }
+
             if (libroActualizado.getEstadoLibro() != null) {
                 libroExistente.setEstadoLibro(libroActualizado.getEstadoLibro());
             }
